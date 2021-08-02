@@ -13,7 +13,7 @@ const RectangleAnalysis = require('./routers/rectangle-analysis')
 const rectangleAnalysis = new RectangleAnalysis({ configs, logger, analyser })
 
 async function run () {
-  app.use(bodyParser({ enableTypes: ['json'] }))
+  app.use(bodyParser())
   rectangleAnalysis.init(app)
 
   app.listen(PORT)

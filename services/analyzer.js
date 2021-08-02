@@ -2,17 +2,35 @@ const { makeError } = require('../services/utils')
 const { isArray, isEmpty, isNil, isObject, isInteger } = require('lodash')
 
 class Analyser {
+  /**
+   * Determine if 2 rectangles intersect
+   * @param {Object} r1 - Rectangle 1
+   * @param {Object} r2 - Rectangle 2
+   * @returns {Boolean} Returns true if intersection detected
+   */
   intersection (r1, r2) {
     const notIntersecting = r2.left >= r1.right || r2.right <= r1.left || r2.bottom >= r1.top || r2.top <= r1.bottom
     return !notIntersecting && !this.containment(r1, r2)
   }
 
+  /**
+   * Determine if one rectangle contains the other one
+   * @param {Object} r1 - Rectangle 1
+   * @param {Object} r2 - Rectangle 2
+   * @returns {Boolean} Returns true if containment detected
+   */
   containment (r1, r2) {
     const r1ContainsR2 = r1.left < r2.left && r1.right > r2.right && r1.top > r2.top && r1.bottom < r2.bottom
     const r2ContainsR1 = r2.left < r1.left && r2.right > r1.right && r2.top > r1.top && r2.bottom < r1.bottom
     return r1ContainsR2 || r2ContainsR1
   }
 
+  /**
+   * Determine adjacency between 2 rectangles
+   * @param {Object} r1 - Rectangle 1
+   * @param {Object} r2 - Rectangle 2
+   * @returns {String} Returns adjacency state
+   */
   adjacency (r1, r2) {
     const leftAdjacency = r1.left === r2.right
     const rightAdjacency = r1.right === r2.left
@@ -42,6 +60,11 @@ class Analyser {
     }
   }
 
+  /**
+   * Validates the payload
+   * @param {Object} payload - Payload
+   * @throws Will throw an error if payload is invalid
+   */
   _validatePayload (payload) {
     if (isEmpty(payload)) {
       throw makeError('Payload is empty', 400)
@@ -77,6 +100,11 @@ class Analyser {
     })
   }
 
+  /**
+   * Analyses the payload
+   * @param {Object} payload - Payload
+   * @returns {Object} Returns the result
+   */
   analyse (payload) {
     this._validatePayload(payload)
     const processed = payload.map((rec, id) => {

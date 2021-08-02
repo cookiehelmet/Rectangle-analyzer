@@ -20,7 +20,7 @@ class RectangleAnalysis extends Router {
       ctx.body = this.analyser.analyse(payload)
       ctx.status = 200
     } catch (err) {
-      this.logger.warn(`Error occurred, ${err.message}`)
+      this.logger.warn(`${err.message}`)
       ctx.body = err.message
       ctx.status = err.status || 500
     }
